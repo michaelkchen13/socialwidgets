@@ -1,0 +1,125 @@
+{% extends "socialWidgets/layout.html" %}
+
+{% block body %}
+
+<div id="allUsers" style="display: none;">
+    <div class="col-md-12">
+        <br>
+        <h1>All Users</h1>
+        <div class="card-columns">
+            {% for user in allUsers %}
+            <div class="card bg-dark">
+                <img class="card-img-top profileImage {{ user.imgFilter }}" src="{{ user.profileImage }}" alt="">
+                <div class="card-body">
+                    <h5 class="card-title"><a class="pointer profileLink">{{user}}</a></h5>
+                </div>
+            </div>
+            {% endfor %}
+        </div>  
+    </div>
+</div>
+
+<div id="profile" style="display: block;">
+    <div class="col-md-12">
+        <br>
+        <h1 id="profileUsername">Profile</h1>
+    </div>
+    <div class="row">
+        <div class="col-md-12" style="text-align: center;">
+            <button data-page="instagram" class="instagram profileNavButton btn btn-outline-dark">PicPosts</button>
+            <button data-page="taskList" class="taskList profileNavButton btn btn-outline-dark">Task List</button>
+            <button data-page="weather" class="weather profileNavButton btn btn-outline-dark">Weather</button>
+            <button data-page="newPost" id="addPostSection" class="newPost profileNavButton btn btn-outline-dark">Add Post</button>
+        </div>
+    </div>
+    <br><br>
+    <div class="container">
+
+        <div id="instagram" class="col-md-12 instagram" style="display: block;">
+            <br><br>
+            <h4 id="noPosts" style="display: none;">No Posts Available :(</h4>
+            <div class="card-columns" id="postContainer"></div>
+        </div>
+
+        <div id="taskList" class="col-md-12" style="display: none;">
+            <h3>Checklist</h3>
+            <br><br>
+            <ul class="list-group">
+                <li class="list-group-item bg-dark" id="newNoteForm">
+                    <div class="form-inline">
+                        <textarea type="text" name="note" id="newNote" class="form-control" placeholder="New Task" style="width: 90%;"></textarea>
+                        <button id="noteSubmit" class="btn btn-primary">Add Task</button>
+                    </div>
+                </li>
+                <div id="notesList">
+                </div>
+            </ul>
+            <br><br>
+        </div>
+
+        <div id="weather" class="col-md-12" style="display: none; text-align: center;">
+            <h3>Weather</h3>
+            <br>
+            <div class="col-md-4 col-md-offset-4" style="margin: auto;" id="zipcodeInputSection">
+                <div class="alert alert-danger" id="invalidZip" role="alert" style="display: none;">
+                    Invalid zipcode, please try again.
+                </div>
+                <p>Update your location.</p>
+                <div class="form-inline">
+                    <input type="text" name="zipcode" id="zipcode" class="form-control" style="margin: auto;" placeholder="US zip code">
+                    <button id="zipcodeSubmit" class="btn btn-primary" style="margin: auto;">Submit</button>
+                </div>
+            </div>
+            <br><br>
+            <div id="weatherContainer" style="text-align: center;">
+            </div>
+        </div>
+
+        <div id="newPost" class="col-md-12" style="display: none;">
+            <h3>Add Post</h3>
+            <br><br>
+            <div id="addImageDiv" style="display: block;">
+                <h4>Upload Image</h4>
+                <p>File Type: jpg, jpeg, and png</p>
+                <form method="POST" enctype='multipart/form-data'>
+                    {% csrf_token %}
+                    <input type="file" accept=".jpg,.jpeg,.png" name="image" required="required">
+                    <button type="submit">Upload File</button>
+                </form>
+            </div>
+            {% if url %}
+            <p>Uploaded file: <a id="imgURL" href="{{ url }}" target="_blank">{{ url }}</a></p>
+            <img id="newPostImg" src="{{ url }}" alt="{{ url }}" width="500px">
+            <br><br>
+
+            <button class="filter btn btn-outline-info" data-filter="noFilter">No Filter</button>
+            <button class="filter btn btn-outline-info" data-filter="contrast">Contrast</button>
+            <button class="filter btn btn-outline-info" data-filter="huerotate180">Hue Rotate 180</button>
+            <button class="filter btn btn-outline-info" data-filter="huerotate90">Hue Rotate 90</button>
+            <button class="filter btn btn-outline-info" data-filter="sepia">Sepia</button>
+            <button class="filter btn btn-outline-info" data-filter="invert">Invert</button>
+            <button class="filter btn btn-outline-info" data-filter="saturate">Saturate</button>
+            <button class="filter btn btn-outline-info" data-filter="_1977">1977</button>
+            <button class="filter btn btn-outline-info" data-filter="skyline">Skyline</button>
+            <button class="filter btn btn-outline-info" data-filter="moon">Moon</button>
+            <button class="filter btn btn-outline-info" data-filter="lofi">Lofi</button>
+            <button class="filter btn btn-outline-info" data-filter="brooklyn">Brooklyn</button>
+
+            <br><br>
+            <div class="form-group" id="postInfoForm">
+                <label for="postTitle">Post Title</label>
+                <input type="text" class="form-control" id="postTitle" placeholder="Enter Post Title">
+            </div>
+            <div class="form-group">
+                <label for="postBody">Post Body</label>
+                <textarea type="text" class="form-control" id="postBody" placeholder="Enter Post Body"></textarea>
+            </div>
+            <button id="addNewPost" class="btn btn-primary">Submit</button>
+            <button id="cancelPost" class="btn btn-outline-danger">Cancel</button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+    
+{% endblock %}
+            
